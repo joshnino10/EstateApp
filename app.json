@@ -24,6 +24,12 @@
       "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
+      [
+        "expo-location",
+        {
+           "locationWhenInUsePermission": "This app needs access to location."
+        }
+      ],
       "expo-router",
       [
         "expo-splash-screen",
@@ -34,7 +40,9 @@
           "backgroundColor": "#ffffff"
         }
       ],
-      "expo-font"
+      "expo-font",
+      "expo-maps"
+     
     ],
     "experiments": {
       "typedRoutes": true

@@ -54,6 +54,7 @@ export default function RootLayout() {
       <Stack.Screen name="onboardingscreen" />
       <Stack.Screen name="onboardingscreen2" />
       <Stack.Screen name="ready" />
+      <Stack.Screen name="otp" />
     </Stack>
     </StateProvider>
   );

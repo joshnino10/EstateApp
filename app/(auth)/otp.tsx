@@ -1,8 +1,9 @@
+import LoginButton from "@/Components/LoginButton/Loginbutton";
+import InputOtp from "@/Components/OtpInput/otpinput";
 import { useGlobal } from "@/context/GlobalContext";
 import Feather from "@expo/vector-icons/Feather";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import { useRouter } from "expo-router";
-import LoginButton from "@/Components/LoginButton/Loginbutton";
 import React, { useEffect, useState } from "react";
 import {
   Platform,
@@ -13,7 +14,6 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import InputOtp from "@/Components/OtpInput/otpinput";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
 export default function Otp() {
@@ -100,11 +100,11 @@ export default function Otp() {
               <Text
                 style={[
                   styles.resendText,
-                  { color: canResend ? "#1F4C6B" : "#A1A5C1" },
+                  { color: canResend ? "#53587A" : "gray" },
                 ]}
               >
                 Didn’t receive the OTP?{" "}
-                <Text style={{ fontWeight: "700" }}>
+                <Text style={{ fontWeight: "700", color: '#252B5C', fontFamily: 'poppinsbold' }}>
                   {canResend ? "Resend OTP" : "Wait"}
                 </Text>
               </Text>
@@ -186,6 +186,7 @@ const styles = StyleSheet.create({
   /*** RESEND OTP ***/
   resendText: {
     fontSize: 14,
+    color: '#53587A',
     fontFamily: "poppinsmedium",
   },
 });

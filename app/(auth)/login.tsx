@@ -78,6 +78,7 @@ export default function Login() {
     }
 
     console.log("Logging in with:", { email, password });
+     router.replace('/location/emptylocation')
     // Proceed with API call or authentication logic
   };
 
