@@ -9,4 +9,7 @@ export default function ForgotPassword() {
   )
 }
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+  
+
+})

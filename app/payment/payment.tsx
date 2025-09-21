@@ -6,7 +6,6 @@ export default function Payment() {
   return (
     <SafeAreaView style={styles.safearea}>
         <PaymentMethod/>
-  
     </SafeAreaView>
   )
 }

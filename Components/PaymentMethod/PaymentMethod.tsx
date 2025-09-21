@@ -11,6 +11,8 @@ import {
   View,
 } from "react-native";
 import LoginButton from "../LoginButton/Loginbutton";
+import ChoosePayment from "./ChoosePayment";
+
 
 export default function PaymentMethod() {
   const router = useRouter();
@@ -40,6 +42,7 @@ export default function PaymentMethod() {
           You can edit this later on your account settings.
         </Text>
       </View>
+
       <View style={{ justifyContent: "center", alignItems: "center" }}>
         <Image
           style={{
@@ -51,6 +54,10 @@ export default function PaymentMethod() {
           source={require("../../assets/images/credit-card.png")}
         />
       </View>
+      <View>
+        <ChoosePayment/>
+      </View>
+
 
       {/* FIXED NEXT BUTTON */}
       <View style={styles.content}>

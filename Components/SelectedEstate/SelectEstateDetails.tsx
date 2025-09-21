@@ -13,7 +13,7 @@ export default function SelectEstateDetails() {
   };
 
   const GotoPayement = ()=>{
-    router.push('/(Payment)/payment')
+    router.push('/payment/payment')
   };
 
   return (
@@ -74,7 +74,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
- 
     marginBottom: 20,
   },
 
