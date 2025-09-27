@@ -12,29 +12,32 @@ import MasterCard from "./MasterCard";
 import Visa from "./Visa";
 
 export default function ChoosePayment() {
-  const [activeTab, setActiveTab] = useState("Paypal");
+  const [activeTab, setActiveTab] = useState("Mastercard");
 
   const tabs = [
     {
       id: "1",
       label: "Paypal",
       image: require("../../assets/images/paypal logo.png"),
+      activeImage: require("../../assets/images/Paypalactive.png"),
     },
     {
       id: "2",
       label: "Mastercard",
       image: require("../../assets/images/masterlogo.png"),
+      activeImage: require("../../assets/images/Mastercard logo.png"),
     },
     {
       id: "3",
       label: "Visa",
       image: require("../../assets/images/Visa logo.png"),
+      activeImage: require("../../assets/images/Visa logo.png"), // fallback if you don't have a separate active image
     },
   ];
 
   return (
-    <View style={styles.wrapper}>
-      {/* Tabs Section */}
+    <View>
+      {/* Tab Selector */}
       <View style={styles.container}>
         <View style={styles.tabContainer}>
           {tabs.map((tab) => {
@@ -47,14 +50,13 @@ export default function ChoosePayment() {
                 activeOpacity={0.8}
               >
                 <View style={styles.innerTab}>
+                  {/* Switch between normal icon and active icon */}
                   <Image
-                    source={tab.image}
-                    style={[styles.tabImage, isActive && styles.activeTabImage]}
+                    source={isActive ? tab.activeImage : tab.image}
+                    style={styles.tabImage}
                     resizeMode="contain"
                   />
-                  <Text
-                    style={[styles.tabText, isActive && styles.activeTabText]}
-                  >
+                  <Text style={[styles.tabText, isActive && styles.activeTabText]}>
                     {tab.label}
                   </Text>
                 </View>
@@ -64,7 +66,7 @@ export default function ChoosePayment() {
         </View>
       </View>
 
-      {/* Conditional Rendering Based on Active Tab */}
+      {/* Content Section */}
       <View style={styles.contentContainer}>
         {activeTab === "Paypal" && <Paypal />}
         {activeTab === "Mastercard" && <MasterCard />}
@@ -75,7 +77,6 @@ export default function ChoosePayment() {
 }
 
 const styles = StyleSheet.create({
-
   container: {
     alignItems: "center",
     marginTop: 20,
@@ -130,10 +131,6 @@ const styles = StyleSheet.create({
   tabImage: {
     width: 23,
     height: 23,
-    opacity: 0.8,
-  },
-  activeTabImage: {
-    opacity: 1,
   },
   tabText: {
     fontSize: 10,
