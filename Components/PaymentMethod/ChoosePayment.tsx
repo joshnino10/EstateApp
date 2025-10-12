@@ -31,7 +31,7 @@ export default function ChoosePayment() {
       id: "3",
       label: "Visa",
       image: require("../../assets/images/Visa logo.png"),
-      activeImage: require("../../assets/images/Visa logo.png"), // fallback if you don't have a separate active image
+      activeImage: require("../../assets/images/Visa logo.png"), 
     },
   ];
 
@@ -50,7 +50,7 @@ export default function ChoosePayment() {
                 activeOpacity={0.8}
               >
                 <View style={styles.innerTab}>
-                  {/* Switch between normal icon and active icon */}
+                
                   <Image
                     source={isActive ? tab.activeImage : tab.image}
                     style={styles.tabImage}
