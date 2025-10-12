@@ -43,17 +43,18 @@ export default function PaymentMethod() {
         </Text>
       </View>
 
-      <View style={{ justifyContent: "center", alignItems: "center" }}>
+    
         <Image
           style={{
-            width: 353,
+            width: 600,
             height: 200,
-            resizeMode: "cover",
+            resizeMode: 'contain',
             borderRadius: 20,
+            alignSelf:'center'
           }}
-          source={require("../../assets/images/credit-card.png")}
+          source={require("../../assets/images/Credit Card.png")}
         />
-      </View>
+   
       <View>
         <ChoosePayment/>
       </View>

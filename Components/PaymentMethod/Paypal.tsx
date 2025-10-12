@@ -8,7 +8,7 @@ export default function Paypal() {
 
   return (
     <View>
-      {/* Username Field */}
+      
       <View style={styles.inputContainer}>
         <TextInput
           style={styles.input}
@@ -25,7 +25,7 @@ export default function Paypal() {
         />
       </View>
 
-      {/* Card Number Field */}
+   
       <View style={styles.inputContainer}>
         <TextInput
           style={styles.input}
