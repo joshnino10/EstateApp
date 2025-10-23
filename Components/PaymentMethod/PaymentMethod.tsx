@@ -3,8 +3,9 @@ import { useRouter } from "expo-router";
 import React from "react";
 import {
   Image,
+  KeyboardAvoidingView,
   Platform,
-  SafeAreaView,
+  ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -13,7 +14,6 @@ import {
 import LoginButton from "../LoginButton/Loginbutton";
 import ChoosePayment from "./ChoosePayment";
 
-
 export default function PaymentMethod() {
   const router = useRouter();
 
@@ -21,48 +21,55 @@ export default function PaymentMethod() {
     router.back();
   };
 
+  const toAccountSetup = () => {
+    router.replace("/account-setup/accountsetup");
+  };
+
   return (
     <View style={styles.page}>
-      {/* HEADER */}
-      <View style={styles.header}>
-        <TouchableOpacity onPress={goBack} style={styles.backButtonWrapper}>
-          <Ionicons name="chevron-back" size={18} color="black" />
-        </TouchableOpacity>
+      {/* SCROLLABLE CONTENT */}
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        // contentContainerStyle={{ }}
+      >
+        {/* HEADER */}
+        <View style={styles.header}>
+          <TouchableOpacity onPress={goBack} style={styles.backButtonWrapper}>
+            <Ionicons name="chevron-back" size={18} color="black" />
+          </TouchableOpacity>
 
-        <TouchableOpacity style={styles.skipButton}>
-          <Text style={styles.skipText}>Skip</Text>
-        </TouchableOpacity>
-      </View>
+          <TouchableOpacity style={styles.skipButton}>
+            <Text style={styles.skipText}>Skip</Text>
+          </TouchableOpacity>
+        </View>
 
-      {/* TITLE SECTION */}
-      <View style={styles.titleContainer}>
-        <Text style={styles.title}>Add your</Text>
-        <Text style={styles.spanTitle}>payment method</Text>
-        <Text style={styles.desc}>
-          You can edit this later on your account settings.
-        </Text>
-      </View>
+        {/* TITLE SECTION */}
+        <View style={styles.titleContainer}>
+          <Text style={styles.title}>Add your</Text>
+          <Text style={styles.spanTitle}>payment method</Text>
+          <Text style={styles.desc}>
+            You can edit this later on your account settings.
+          </Text>
+        </View>
 
-    
+        {/* IMAGE */}
         <Image
-          style={{
-            width: 600,
-            height: 200,
-            resizeMode: 'contain',
-            borderRadius: 20,
-            alignSelf:'center'
-          }}
+          style={styles.cardImage}
           source={require("../../assets/images/Credit Card.png")}
         />
-   
-      <View>
-        <ChoosePayment/>
-      </View>
 
+        {/* INPUT SECTION WITH KEYBOARD AVOIDING VIEW */}
+        <KeyboardAvoidingView
+          behavior={Platform.OS === "ios" ? "padding" : undefined}
+          keyboardVerticalOffset={Platform.OS === "ios" ? 5 : 0}
+        >
+          <ChoosePayment />
+        </KeyboardAvoidingView>
+      </ScrollView>
 
-      {/* FIXED NEXT BUTTON */}
-      <View style={styles.content}>
-        <LoginButton title="next" />
+      {/* FIXED NEXT BUTTON — OUTSIDE SCROLLVIEW */}
+      <View style={styles.fixedButtonContainer}>
+        <LoginButton onPress={toAccountSetup} title="next" />
       </View>
     </View>
   );
@@ -82,7 +89,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginBottom: 20,
   },
-
   backButtonWrapper: {
     width: 50,
     height: 50,
@@ -107,7 +113,6 @@ const styles = StyleSheet.create({
   titleContainer: {
     marginBottom: 20,
   },
-
   title: {
     fontFamily: "latomedium",
     fontSize: 25,
@@ -129,12 +134,22 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
 
+  /** IMAGE */
+  cardImage: {
+    width: 350,
+    height: 250,
+    resizeMode: "cover",
+    borderRadius: 20,
+    alignSelf: "center",
+  },
+
   /** FIXED BUTTON */
-  content: {
+  fixedButtonContainer: {
     position: "absolute",
-    bottom: Platform.OS === "ios" ? 0 : 20,
+    bottom: Platform.OS === "ios" ? 20 : 20,
     left: 16,
     right: 16,
     alignItems: "center",
+    backgroundColor: "transparent",
   },
 });

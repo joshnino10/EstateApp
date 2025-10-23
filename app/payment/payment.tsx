@@ -1,6 +1,6 @@
 import PaymentMethod from '@/Components/PaymentMethod/PaymentMethod'
 import React from 'react'
-import { Platform, SafeAreaView, StatusBar, StyleSheet, Text,  } from 'react-native'
+import { Platform, SafeAreaView, StatusBar, StyleSheet,   } from 'react-native'
 
 export default function Payment() {
   return (
