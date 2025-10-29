@@ -61,7 +61,7 @@ export default function PaymentMethod() {
         {/* INPUT SECTION WITH KEYBOARD AVOIDING VIEW */}
         <KeyboardAvoidingView
           behavior={Platform.OS === "ios" ? "padding" : undefined}
-          keyboardVerticalOffset={Platform.OS === "ios" ? 5 : 0}
+          keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 0}
         >
           <ChoosePayment />
         </KeyboardAvoidingView>

@@ -16,18 +16,15 @@ import {
 } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import LoginButton from '../LoginButton/Loginbutton';
+import SuccessModal from '../SuccessfulModal/successmodal';
 
 export default function AccountSetupDetails() {
   const router = useRouter();
   const [profileImage, setProfileImage] = useState<string | null>(null);
   const [isImageLoading, setIsImageLoading] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [formData, setFormData] = useState({
-    fullName: '',
-    phoneNumber: '',
-    email: '',
-  });
-  const [errors, setErrors] = useState({
     fullName: '',
     phoneNumber: '',
     email: '',
@@ -45,13 +42,16 @@ export default function AccountSetupDetails() {
     })();
   }, []);
 
+  // Debug: Log when modal state changes
+  useEffect(() => {
+    console.log('Modal visibility changed:', showSuccessModal);
+  }, [showSuccessModal]);
+
   const goBack = () => {
     router.back();
   };
 
   const handleSkip = () => {
-    // Navigate to next screen or home
-    // router.push('/(tabs)');
     Alert.alert('Skip', 'You can complete your profile later');
   };
 
@@ -76,74 +76,58 @@ export default function AccountSetupDetails() {
     }
   };
 
-  const validateEmail = (email: string) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-  };
-
-  const validatePhone = (phone: string) => {
-    const phoneRegex = /^[0-9+\-\s()]{10,}$/;
-    return phoneRegex.test(phone);
-  };
+  const validateEmail = (email: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  const validatePhone = (phone: string) => /^[0-9+\-\s()]{10,}$/.test(phone);
 
   const handleNext = async () => {
+    console.log('handleNext called');
     if (isSubmitting) return;
 
-    const newErrors = {
-      fullName: '',
-      phoneNumber: '',
-      email: '',
-    };
-
-    // Validate Full Name
     if (!formData.fullName.trim()) {
-      newErrors.fullName = 'Full name is required';
-    } else if (formData.fullName.trim().length < 2) {
-      newErrors.fullName = 'Name must be at least 2 characters';
+      Alert.alert('Missing Info', 'Please enter your full name.');
+      return;
     }
-
-    // Validate Phone Number
+    if (formData.fullName.trim().length < 2) {
+      Alert.alert('Invalid Name', 'Full name must be at least 2 characters long.');
+      return;
+    }
     if (!formData.phoneNumber.trim()) {
-      newErrors.phoneNumber = 'Phone number is required';
-    } else if (!validatePhone(formData.phoneNumber)) {
-      newErrors.phoneNumber = 'Please enter a valid phone number';
+      Alert.alert('Missing Info', 'Please enter your phone number.');
+      return;
     }
-
-    // Validate Email
+    if (!validatePhone(formData.phoneNumber)) {
+      Alert.alert('Invalid Phone', 'Please enter a valid phone number.');
+      return;
+    }
     if (!formData.email.trim()) {
-      newErrors.email = 'Email is required';
-    } else if (!validateEmail(formData.email)) {
-      newErrors.email = 'Please enter a valid email address';
+      Alert.alert('Missing Info', 'Please enter your email address.');
+      return;
+    }
+    if (!validateEmail(formData.email)) {
+      Alert.alert('Invalid Email', 'Please enter a valid email address.');
+      return;
     }
 
-    setErrors(newErrors);
+    console.log('All validations passed');
+    setIsSubmitting(true);
+    console.log('Form data:', formData, 'Profile image:', profileImage);
 
-    // Check if there are any errors
-    if (!newErrors.fullName && !newErrors.phoneNumber && !newErrors.email) {
-      setIsSubmitting(true);
-      
-      // Simulate API call or data saving
-      console.log('Form data:', formData, 'Profile image:', profileImage);
-      
-      // Simulate network delay
-      setTimeout(() => {
-        setIsSubmitting(false);
-        Alert.alert('Success', 'Account setup completed!', [
-          {
-            text: 'Continue',
-            onPress: () => {
-              // router.push('/account-setup/success');
-            }
-          }
-        ]);
-      }, 1500);
-    }
+    setTimeout(() => {
+      console.log('Setting modal to true');
+      setIsSubmitting(false);
+      setShowSuccessModal(true);
+    }, 1500);
+  };
+
+  const handleModalClose = () => {
+    console.log('Modal closing');
+    setShowSuccessModal(false);
+    // Navigate to home or dashboard
+    // router.push('/home');
   };
 
   const updateFormData = (field: keyof typeof formData, value: string) => {
     setFormData({ ...formData, [field]: value });
-    // Clear error when user starts typing
-    setErrors({ ...errors, [field]: '' });
   };
 
   return (
@@ -157,6 +141,7 @@ export default function AccountSetupDetails() {
         keyboardShouldPersistTaps="handled"
       >
         <View style={styles.container}>
+          {/* HEADER */}
           <View style={styles.header}>
             <TouchableOpacity onPress={goBack} style={styles.backButtonWrapper}>
               <Ionicons name="chevron-back" size={18} color="black" />
@@ -167,6 +152,7 @@ export default function AccountSetupDetails() {
             </TouchableOpacity>
           </View>
 
+          {/* TITLE */}
           <View style={styles.titleContainer}>
             <View style={{ flexDirection: 'row' }}>
               <Text style={styles.title}>Fill your</Text>
@@ -179,7 +165,7 @@ export default function AccountSetupDetails() {
             You can edit this later on your account setting.
           </Text>
 
-          {/* Profile Image Section */}
+          {/* PROFILE IMAGE */}
           <View style={styles.profileSection}>
             <TouchableOpacity
               onPress={pickImage}
@@ -203,108 +189,75 @@ export default function AccountSetupDetails() {
             </TouchableOpacity>
           </View>
 
-          {/* Form Inputs */}
+          {/* FORM INPUTS */}
           <View style={styles.formContainer}>
             {/* Full Name */}
-            <View style={styles.inputWrapper}>
-              <View style={[styles.inputContainer, errors.fullName && styles.inputError]}>
-                
-                <Image style={{marginRight:10 ,width:20, height:20, tintColor:'#252B5C'}} source={require('../../assets/images/Profile.png')}/>
-                    
-          
-                <TextInput
-                  style={styles.input}
-                  placeholder="Full Name"
-                  placeholderTextColor="#A1A5C1"
-                  value={formData.fullName}
-                  onChangeText={(text) => updateFormData('fullName', text)}
-                  autoCapitalize="words"
-                />
-              </View>
-              {errors.fullName ? (
-                <Text style={styles.errorText}>{errors.fullName}</Text>
-              ) : null}
+            <View style={styles.inputContainer}>
+              <Image
+                style={{ marginRight: 10, width: 20, height: 20, tintColor: '#252B5C' }}
+                source={require('../../assets/images/Profile.png')}
+              />
+              <TextInput
+                style={styles.input}
+                placeholder="Full Name"
+                placeholderTextColor="#A1A5C1"
+                value={formData.fullName}
+                onChangeText={(text) => updateFormData('fullName', text)}
+                autoCapitalize="words"
+              />
             </View>
 
             {/* Phone Number */}
-            <View style={styles.inputWrapper}>
-              <View style={[styles.inputContainer, errors.phoneNumber && styles.inputError]}>
-                <Ionicons 
-                  name="call-outline" 
-                  size={20} 
-                  color={errors.phoneNumber ? '#FF6B6B' : '#252B5C'} 
-                  style={styles.inputIcon} 
-                />
-                <TextInput
-                  style={styles.input}
-                  placeholder="Phone Number"
-                  placeholderTextColor="#A1A5C1"
-                  keyboardType="phone-pad"
-                  value={formData.phoneNumber}
-                  onChangeText={(text) => updateFormData('phoneNumber', text)}
-                />
-              </View>
-              {errors.phoneNumber ? (
-                <Text style={styles.errorText}>{errors.phoneNumber}</Text>
-              ) : null}
+            <View style={styles.inputContainer}>
+              <Ionicons name="call-outline" size={20} color="#252B5C" style={styles.inputIcon} />
+              <TextInput
+                style={styles.input}
+                placeholder="Phone Number"
+                placeholderTextColor="#A1A5C1"
+                keyboardType="phone-pad"
+                value={formData.phoneNumber}
+                onChangeText={(text) => updateFormData('phoneNumber', text)}
+              />
             </View>
 
             {/* Email */}
-            <View style={styles.inputWrapper}>
-              <View style={[
-                styles.inputContainer, 
-                styles.emailContainer,
-                errors.email && styles.inputErrorEmail
-              ]}>
-                <Ionicons 
-                  name="mail-outline" 
-                  size={20} 
-                  color={errors.email ? '#FF6B6B' : '#fff'} 
-                  style={styles.inputIcon} 
-                />
-                <TextInput
-                  style={[styles.input, styles.emailInput]}
-                  placeholder="Email"
-                  placeholderTextColor="rgba(255,255,255,0.6)"
-                  keyboardType="email-address"
-                  autoCapitalize="none"
-                  autoCorrect={false}
-                  value={formData.email}
-                  onChangeText={(text) => updateFormData('email', text)}
-                />
-              </View>
-              {errors.email ? (
-                <Text style={styles.errorText}>{errors.email}</Text>
-              ) : null}
+            <View style={[styles.inputContainer, styles.emailContainer]}>
+              <Ionicons name="mail-outline" size={20} color="#fff" style={styles.inputIcon} />
+              <TextInput
+                style={[styles.input, styles.emailInput]}
+                placeholder="Email"
+                placeholderTextColor="rgba(255,255,255,0.6)"
+                keyboardType="email-address"
+                autoCapitalize="none"
+                autoCorrect={false}
+                value={formData.email}
+                onChangeText={(text) => updateFormData('email', text)}
+              />
             </View>
           </View>
 
-          {/* Next Button */}
-          <View style={{alignSelf: 'center'}}>
-
-          <LoginButton  
-            title={isSubmitting ? "Finish" : "Next"}
-            onPress={handleNext}
-            disabled={isSubmitting}
+          {/* NEXT BUTTON */}
+          <View style={{ alignSelf: 'center' }}>
+            <LoginButton
+              title={isSubmitting ? 'Finishing...' : 'Next'}
+              onPress={handleNext}
+              disabled={isSubmitting}
             >
-            {isSubmitting && <ActivityIndicator color="blue" size="large" />}
-          </LoginButton>
-      </View>
+              {isSubmitting && <ActivityIndicator color="blue" size="large" />}
+            </LoginButton>
+          </View>
         </View>
       </ScrollView>
+
+      {/* SUCCESS MODAL */}
+      <SuccessModal visible={showSuccessModal} onClose={handleModalClose} />
     </KeyboardAvoidingView>
   );
 }
 
 const styles = StyleSheet.create({
-  scrollContent: {
-    flexGrow: 1,
-  },
-  container: {
-    flex: 1,
-    paddingHorizontal: 16,
-    backgroundColor: '#fff',
-  },
+  scrollContent: { flexGrow: 1 },
+  container: { flex: 1, paddingHorizontal: 16, backgroundColor: '#fff' },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -330,9 +283,7 @@ const styles = StyleSheet.create({
     color: '#3A3F67',
     fontSize: 12,
   },
-  titleContainer: {
-    marginBottom: 20,
-  },
+  titleContainer: { marginBottom: 20 },
   title: {
     fontFamily: 'latomedium',
     fontSize: 25,
@@ -354,17 +305,11 @@ const styles = StyleSheet.create({
   },
   profileSection: {
     alignItems: 'center',
-    marginTop:40,
+    marginTop: 40,
     marginBottom: 32,
   },
-  profileImageContainer: {
-    position: 'relative',
-  },
-  profileImage: {
-    width: 120,
-    height: 120,
-    borderRadius: 60,
-  },
+  profileImageContainer: { position: 'relative' },
+  profileImage: { width: 120, height: 120, borderRadius: 60 },
   placeholderImage: {
     width: 120,
     height: 120,
@@ -386,12 +331,7 @@ const styles = StyleSheet.create({
     borderWidth: 3,
     borderColor: '#fff',
   },
-  formContainer: {
-    marginBottom: 32,
-  },
-  inputWrapper: {
-    marginBottom: 16,
-  },
+  formContainer: { marginBottom: 32 },
   inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -399,62 +339,15 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     height: 70,
     paddingHorizontal: 16,
-    paddingVertical: 16,
-    borderWidth: 1,
-    borderColor: 'transparent',
+    marginBottom: 16,
   },
-  emailContainer: {
-    backgroundColor: '#234F68',
-  },
-  inputError: {
-    borderColor: '#FF6B6B',
-    backgroundColor: '#FFF5F5',
-  },
-  inputErrorEmail: {
-    borderColor: '#FF6B6B',
-  },
-  inputIcon: {
-    marginRight: 12,
-  },
+  emailContainer: { backgroundColor: '#234F68' },
+  inputIcon: { marginRight: 12 },
   input: {
     flex: 1,
     fontSize: 14,
     fontFamily: 'poppinsregular',
     color: '#252B5C',
   },
-  emailInput: {
-    color: '#fff',
-  },
-  errorText: {
-    color: '#FF6B6B',
-    fontSize: 11,
-    marginTop: 6,
-    marginLeft: 4,
-    fontFamily: 'poppinsregular',
-  },
-  nextButton: {
-    backgroundColor: '#8BC83F',
-    borderRadius: 12,
-    paddingVertical: 18,
-    alignItems: 'center',
-    marginBottom: 32,
-    shadowColor: '#8BC83F',
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
-    elevation: 5,
-  },
-  nextButtonDisabled: {
-    backgroundColor: '#A8D47E',
-    opacity: 0.7,
-  },
-  nextButtonText: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: '600',
-    fontFamily: 'latobold',
-  },
+  emailInput: { color: '#fff' },
 });
