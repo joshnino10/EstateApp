@@ -1,7 +1,7 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import Feather from '@expo/vector-icons/Feather';
 import React, { useState } from 'react';
-import { Platform, StyleSheet, TextInput, View } from 'react-native';
+import { Platform, StyleSheet, TextInput, View, Image } from 'react-native';
 
 export default function MasterCard() {
   const [username, setUsername] = useState('');
@@ -20,7 +20,7 @@ export default function MasterCard() {
           value={username}
           onChangeText={setUsername}
         />
-        <Ionicons name="person-outline" size={18} color="#252B5C" style={styles.icon} />
+       <Image style={{width:22, height:22}}  source={require('../../assets/images/Profile.png')}/>
       </View>
 
       {/* Card Number Field */}
@@ -34,7 +34,7 @@ export default function MasterCard() {
           onChangeText={setCardNumber}
           maxLength={16} 
         />
-        <Ionicons name="card-outline" size={22} color="#252B5C" style={styles.icon} />
+        <Ionicons name="card-outline" size={20} color="#252B5C" style={styles.icon} />
       </View>
 
       {/* Date & CVV Row */}
@@ -49,7 +49,7 @@ export default function MasterCard() {
             keyboardType="numeric"
             value={cardDate}
             onChangeText={setCardDate}
-            maxLength={8} // e.g., 12/12/24
+            maxLength={8} 
           />
         </View>
 
@@ -64,7 +64,7 @@ export default function MasterCard() {
             secureTextEntry
             value={cvv}
             onChangeText={setCvv}
-            maxLength={3} // CVV usually 3 or 4 digits
+            maxLength={3}
           />
         </View>
       </View>

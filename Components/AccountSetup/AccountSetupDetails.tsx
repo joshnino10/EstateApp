@@ -283,7 +283,7 @@ export default function AccountSetupDetails() {
           <View style={{alignSelf: 'center'}}>
 
           <LoginButton  
-            title={isSubmitting ? "" : "Next"}
+            title={isSubmitting ? "Finish" : "Next"}
             onPress={handleNext}
             disabled={isSubmitting}
             >

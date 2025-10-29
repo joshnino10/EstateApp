@@ -1,6 +1,6 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
 import React, { useState } from "react";
-import { Platform, StyleSheet, TextInput, View } from "react-native";
+import { Platform, StyleSheet, TextInput, View, Image } from "react-native";
 
 export default function Paypal() {
   const [name, setname] = useState("");
@@ -17,12 +17,8 @@ export default function Paypal() {
           value={name}
           onChangeText={setname}
         />
-        <Ionicons
-          name="person-outline"
-          size={17}
-          color="#252B5C"
-          style={styles.icon}
-        />
+        <Image style={{width:20, height:20}}  source={require('../../assets/images/Profile.png')}/>
+       
       </View>
 
    
@@ -31,7 +27,6 @@ export default function Paypal() {
           style={styles.input}
           placeholder="email"
           placeholderTextColor="#A1A5C1"
-          keyboardType="numeric"
           value={email}
           onChangeText={setEmail}
         />
