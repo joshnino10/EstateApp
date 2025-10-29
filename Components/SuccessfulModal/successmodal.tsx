@@ -6,12 +6,12 @@ import {
   StyleSheet,
   Text,
   View,
- 
 } from 'react-native';
 import { BlurView as ExpoBlurView } from 'expo-blur';
 import LoginButton from '../LoginButton/Loginbutton';
+import { useRouter } from 'expo-router';
 
-const { width, height } = Dimensions.get('window');
+const { width } = Dimensions.get('window');
 
 interface SuccessModalProps {
   visible: boolean;
@@ -19,6 +19,13 @@ interface SuccessModalProps {
 }
 
 export default function SuccessModal({ visible, onClose }: SuccessModalProps) {
+  const router = useRouter();
+
+  const gotoHome = () => {
+    onClose(); // Close the modal first
+    router.replace('/(tabs)/home');
+  };
+
   return (
     <Modal
       visible={visible}
@@ -53,7 +60,7 @@ export default function SuccessModal({ visible, onClose }: SuccessModalProps) {
             <View style={styles.buttonContainer}>
               <LoginButton
                 title="Finish"
-                onPress={onClose}
+                onPress={gotoHome}
               />
             </View>
           </View>
@@ -72,7 +79,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(15, 23, 42, 0.3)',
     justifyContent: 'flex-end',
     alignItems: 'center',
-    
   },
   modalContent: {
     backgroundColor: 'white',
@@ -112,14 +118,13 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     textAlign: 'center',
     fontFamily: 'latomedium',
-    marginBottom:10
+    marginBottom: 10,
   },
-  spantitle:{
+  spantitle: {
     fontSize: 25,
     fontWeight: '800',
-    color:"#252B5C",
-    fontFamily: 'latoextrabold'
-
+    color: '#252B5C',
+    fontFamily: 'latoextrabold',
   },
   subtitle: {
     fontSize: 16,

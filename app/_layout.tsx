@@ -51,6 +51,7 @@ export default function RootLayout() {
     <StateProvider>
     <Stack screenOptions={{ headerShown: false }}>
       <Stack.Screen name="index" />
+      <Stack.Screen name="(tabs)" />
       <Stack.Screen name="onboardingscreen" />
       <Stack.Screen name="onboardingscreen2" />
       <Stack.Screen name="ready" />
