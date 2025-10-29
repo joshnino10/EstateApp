@@ -12,7 +12,7 @@ export default function Tablayout() {
         tabBarBackground: () => (
           <BlurView
             tint="light"
-            intensity={70}
+            intensity={20}
             style={{
               flex: 1,
               borderRadius: 25,
@@ -27,10 +27,10 @@ export default function Tablayout() {
           right: 20,
           height: 70,
           paddingTop: 12,
-          paddingHorizontal: 30,
+          paddingHorizontal: 50,
           borderRadius: 25,
           overflow: 'hidden',
-          borderTopWidth: 2,
+          borderTopWidth: 0,
           borderTopColor: '#ffffff',
           elevation: 8,
           shadowColor: '#000',
@@ -112,7 +112,7 @@ export default function Tablayout() {
               source={
                 focused
                   ? require('../../assets/images/Profile.png')
-                  : require('../../assets/images/Apple.png')
+                  : require('../../assets/images/Profile.png')
               }
               style={{
                 width: 30,
