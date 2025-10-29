@@ -1,12 +1,19 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { Platform, SafeAreaView, StatusBar, StyleSheet, Text,  } from 'react-native'
 import React from 'react'
 
 export default function Home() {
   return (
-    <View>
+    <SafeAreaView style={styles.SafeArea}>
       <Text>home</Text>
-    </View>
+    </SafeAreaView>
   )
 }
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+    SafeArea:{
+        flex:1,
+        backgroundColor: 'white',
+        paddingTop:Platform.OS === "android"? StatusBar.currentHeight:0
+    },
+
+})

@@ -49,7 +49,7 @@ export default function RootLayout() {
 
   return (
     <StateProvider>
-    <Stack screenOptions={{ headerShown: false }}>
+    <Stack screenOptions={{ headerShown: false , gestureEnabled:false}}>
       <Stack.Screen name="index" />
       <Stack.Screen name="(tabs)" />
       <Stack.Screen name="onboardingscreen" />
